@@ -11,7 +11,6 @@ import com.bookingservice.entity.BookingStatus;
 import com.bookingservice.entity.HotelBooking;
 import com.bookingservice.model.BookingRequest;
 import com.bookingservice.model.BookingResponse;
-import com.bookingservice.model.FlightBookingRequest;
 import com.bookingservice.model.HotelBookingRequest;
 import com.bookingservice.model.HotelBookingResponse;
 import com.bookingservice.repository.HotelBookingRepository;
@@ -28,7 +27,7 @@ public class HotelBookingService implements BookingService {
 	@Override
 	public BookingResponse createBooking(BookingRequest bookingRequest) {
 
-		if (!(bookingRequest instanceof FlightBookingRequest)) {
+		if (!(bookingRequest instanceof HotelBookingRequest)) {
 			throw new IllegalArgumentException("Invalid Booking Type");
 		}
 		HotelBooking hotelBooking = mapToHotelBooking(bookingRequest);
@@ -51,7 +50,7 @@ public class HotelBookingService implements BookingService {
 		hotelBooking.setBookingNumber(UUID.randomUUID().toString());
 		hotelBooking.setCheckInDate(hotelBookingRequest.getCheckInDate());
 		hotelBooking.setCheckOutDate(hotelBookingRequest.getCheckOutDate());
-		hotelBooking.setHotelName(hotelBooking.getHotelName());
+		hotelBooking.setHotelName(hotelBookingRequest.getHotelName());
 		hotelBooking.setPassengerName(hotelBookingRequest.getPassengerName());
 		hotelBooking.setPaymentMode(hotelBookingRequest.getPaymentMode().name());
 		hotelBooking.setStatus(BookingStatus.CREATED.name());
