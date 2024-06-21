@@ -5,10 +5,12 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.bookingservice.entity.BookingStatus;
 import com.bookingservice.entity.FlightBooking;
+import com.bookingservice.exceptions.FlightBookingException;
 import com.bookingservice.model.BookingRequest;
 import com.bookingservice.model.BookingResponse;
 import com.bookingservice.model.FlightBookingRequest;
@@ -28,10 +30,17 @@ public class FlightBookingService implements BookingService {
 	public BookingResponse createBooking(BookingRequest bookingRequest) {
 
 		if (!(bookingRequest instanceof FlightBookingRequest)) {
-			throw new IllegalArgumentException("Invalid Booking Type");
+			throw new FlightBookingException("Invalid Booking Type", HttpStatus.BAD_REQUEST);
 		}
-
 		FlightBooking flightBooking = mapToFlightBooking(bookingRequest);
+
+		if (flightBookingRepository.existsByFlightNumber(flightBooking.getFlightNumber())) {
+			throw new FlightBookingException(
+					"Flight Already Booked For Passenger : " + flightBooking.getPassengerName()
+							+ " with FlightNumber : "
+							+ flightBooking.getFlightNumber() + "",
+					HttpStatus.CONFLICT);
+		}
 
 		flightBooking = flightBookingRepository.save(flightBooking);
 

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -17,15 +16,19 @@ import com.flightservice.repository.FlightRepository;
 @Service
 public class FlightServiceImpl implements FlightService {
 
-	@Autowired
-	private FlightRepository flightRepository;
+	private final FlightRepository flightRepository;
+
+	FlightServiceImpl(FlightRepository flightRepository) {
+		this.flightRepository = flightRepository;
+
+	}
 
 	@Override
 	public FlightResponse createFlight(FlightRequest flightRequest) throws FlightServiceExceptions {
 
 		if (flightRepository.existsByFlightNumber(flightRequest.getFlightNumber())) {
 
-			throw new FlightServiceExceptions("Record Already Exist", "FLIGHT_ALREADY_EXIST", HttpStatus.CONFLICT);
+			throw new FlightServiceExceptions("FLIGHT_ALREADY_EXIST", HttpStatus.CONFLICT);
 
 		} else {
 
@@ -49,13 +52,13 @@ public class FlightServiceImpl implements FlightService {
 	public List<FlightResponse> getAllFlights() throws FlightServiceExceptions {
 
 		if (flightRepository.findAll().isEmpty()) {
-			throw new FlightServiceExceptions("No Record Exist", "FLIGHT_LIST_NOT_FOUND", HttpStatus.NOT_FOUND);
+			throw new FlightServiceExceptions("FLIGHT_LIST_NOT_FOUND", HttpStatus.NOT_FOUND);
 		} else {
 			List<Flight> flights = flightRepository.findAll();
-			List<FlightResponse> flightResponseL = flights.stream().map(this::mapToFlightResponse)
+
+			return flights.stream().map(this::mapToFlightResponse)
 					.collect(Collectors.toList());
 
-			return flightResponseL;
 		}
 	}
 
@@ -70,7 +73,7 @@ public class FlightServiceImpl implements FlightService {
 			return flightReponse;
 		} else {
 
-			throw new FlightServiceExceptions("No Record Exist", "FLIGHT_NOT_FOUND", HttpStatus.NOT_FOUND);
+			throw new FlightServiceExceptions("FLIGHT_NOT_FOUND", HttpStatus.NOT_FOUND);
 		}
 
 	}

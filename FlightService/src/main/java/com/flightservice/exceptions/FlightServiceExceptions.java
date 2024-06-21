@@ -7,17 +7,13 @@ import lombok.Data;
 @Data
 public class FlightServiceExceptions extends Exception {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
-	private String errorCode;
-	private HttpStatus httpStatusCode;
+	private final HttpStatus errorCode;
 
-	public FlightServiceExceptions(String message, String errorCode, HttpStatus httpStatusCode) {
+	public FlightServiceExceptions(String message, HttpStatus errorCode) {
 		super(message);
 		this.errorCode = errorCode;
-		this.httpStatusCode = httpStatusCode;
+
 	}
 
 }

@@ -18,20 +18,20 @@ public class FlightGlobalExceptionHandler {
 	@ExceptionHandler(FlightServiceExceptions.class)
 	public ResponseEntity<ErrorResponse> handleFlightServiceException(FlightServiceExceptions ex) {
 
-		ErrorResponse erObj = ErrorResponse.builder().httpStatus(ex.getHttpStatusCode()).errorCode(ex.getErrorCode())
+		ErrorResponse erObj = ErrorResponse.builder().errorCode(ex.getErrorCode())
 				.errorMessage(ex.getMessage()).build();
 
-		return new ResponseEntity<>(erObj, erObj.getHttpStatus());
+		return new ResponseEntity<>(erObj, erObj.getErrorCode());
 
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponse> handleGenericException(Exception ex) {
 
-		ErrorResponse erObj = ErrorResponse.builder().httpStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-				.errorCode("INTERNAL_SERVER_ERROR").errorMessage(ex.getMessage()).build();
+		ErrorResponse erObj = ErrorResponse.builder().errorCode(HttpStatus.INTERNAL_SERVER_ERROR)
+				.errorMessage(ex.getMessage()).build();
 
-		return new ResponseEntity<>(erObj, erObj.getHttpStatus());
+		return new ResponseEntity<>(erObj, erObj.getErrorCode());
 
 	}
 

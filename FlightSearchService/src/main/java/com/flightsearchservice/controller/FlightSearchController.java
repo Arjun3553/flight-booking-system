@@ -16,7 +16,7 @@ import com.flightsearchservice.service.FlightSearchService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/v1/search")
+@RequestMapping("/v1/api/search")
 @RequiredArgsConstructor
 public class FlightSearchController {
 

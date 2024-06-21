@@ -8,4 +8,6 @@ import com.bookingservice.entity.FlightBooking;
 @Repository
 public interface FlightBookingRepository extends JpaRepository<FlightBooking, Long> {
 
+    boolean existsByFlightNumber(String flightNumber);
+
 }

@@ -5,10 +5,12 @@ import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.bookingservice.entity.BookingStatus;
 import com.bookingservice.entity.HotelBooking;
+import com.bookingservice.exceptions.HotelBookingException;
 import com.bookingservice.model.BookingRequest;
 import com.bookingservice.model.BookingResponse;
 import com.bookingservice.model.HotelBookingRequest;
@@ -28,9 +30,15 @@ public class HotelBookingService implements BookingService {
 	public BookingResponse createBooking(BookingRequest bookingRequest) {
 
 		if (!(bookingRequest instanceof HotelBookingRequest)) {
-			throw new IllegalArgumentException("Invalid Booking Type");
+			throw new HotelBookingException("Invalid Booking Type", HttpStatus.BAD_REQUEST);
 		}
 		HotelBooking hotelBooking = mapToHotelBooking(bookingRequest);
+
+		if (hotelBookingRepository.existsByPassengerName(hotelBooking.getPassengerName())) {
+			throw new HotelBookingException(
+					"Hotel Already Booked For Guest : " + hotelBooking.getPassengerName() + "",
+					HttpStatus.CONFLICT);
+		}
 
 		hotelBooking = hotelBookingRepository.save(hotelBooking);
 

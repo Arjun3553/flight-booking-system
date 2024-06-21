@@ -1,4 +1,4 @@
-package com.flightservice.model;
+package com.bookingservice.model;
 
 import org.springframework.http.HttpStatus;
 
@@ -8,12 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class ErrorResponse {
 
-	private String errorMessage;
-	private HttpStatus errorCode;
+    private String errorMessage;
+    private HttpStatus errorCode;
 
 }
