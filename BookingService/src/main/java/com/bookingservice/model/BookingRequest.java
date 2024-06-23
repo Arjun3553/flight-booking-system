@@ -8,5 +8,7 @@ public sealed class BookingRequest permits FlightBookingRequest, HotelBookingReq
 	private String passengerName;
 	private double amount;
 	private PaymentMode paymentMode;
+	private String flightNumber;
+	private int seats;
 
 }

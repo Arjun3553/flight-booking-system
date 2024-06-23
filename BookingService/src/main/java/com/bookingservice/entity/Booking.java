@@ -37,4 +37,7 @@ public class Booking {
 	private String paymentMode;
 	private LocalDate bookingDate;
 
+	private String flightNumber;
+	private int seats;
+
 }

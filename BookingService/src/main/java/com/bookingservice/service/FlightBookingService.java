@@ -66,4 +66,10 @@ public class FlightBookingService implements BookingService {
 		return flightBooking;
 	}
 
+	@Override
+	public String reserveSeats(BookingRequest bookingRequest) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'reserveSeats'");
+	}
+
 }

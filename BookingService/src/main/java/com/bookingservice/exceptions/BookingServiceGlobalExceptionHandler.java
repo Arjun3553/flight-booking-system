@@ -36,4 +36,13 @@ public class BookingServiceGlobalExceptionHandler {
         return new ResponseEntity<>(errObj, errObj.getErrorCode());
     }
 
+    @ExceptionHandler(FeignClientException.class)
+    public final ResponseEntity<ErrorResponse> handleBadRequestException(FeignClientException ex) {
+
+        ErrorResponse errObj = ErrorResponse.builder().errorCode(ex.getErrorCode())
+                .errorMessage(ex.getLocalizedMessage()).build();
+
+        return new ResponseEntity<>(errObj, errObj.getErrorCode());
+    }
+
 }

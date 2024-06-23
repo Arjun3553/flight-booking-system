@@ -13,7 +13,10 @@ import com.flightservice.model.FlightRequest;
 import com.flightservice.model.FlightResponse;
 import com.flightservice.repository.FlightRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class FlightServiceImpl implements FlightService {
 
 	private final FlightRepository flightRepository;
@@ -28,6 +31,8 @@ public class FlightServiceImpl implements FlightService {
 
 		if (flightRepository.existsByFlightNumber(flightRequest.getFlightNumber())) {
 
+			log.info("flight already exists with flight number : {}", flightRequest.getFlightNumber());
+
 			throw new FlightServiceExceptions("FLIGHT_ALREADY_EXIST", HttpStatus.CONFLICT);
 
 		} else {
@@ -39,6 +44,8 @@ public class FlightServiceImpl implements FlightService {
 					.amount(flightRequest.getAmount()).build();
 
 			flightRepository.save(flight);
+
+			log.info("flight created successfully");
 
 			FlightResponse flightResponse = new FlightResponse();
 			BeanUtils.copyProperties(flight, flightResponse);
@@ -52,6 +59,9 @@ public class FlightServiceImpl implements FlightService {
 	public List<FlightResponse> getAllFlights() throws FlightServiceExceptions {
 
 		if (flightRepository.findAll().isEmpty()) {
+
+			log.info("flight list is empty : {}", flightRepository.findAll());
+
 			throw new FlightServiceExceptions("FLIGHT_LIST_NOT_FOUND", HttpStatus.NOT_FOUND);
 		} else {
 			List<Flight> flights = flightRepository.findAll();
@@ -70,8 +80,13 @@ public class FlightServiceImpl implements FlightService {
 			Flight flight = flightRepository.findByFlightNumber(flightNumber).get();
 			FlightResponse flightReponse = new FlightResponse();
 			BeanUtils.copyProperties(flight, flightReponse);
+
+			log.info("requested flight : {}", flightReponse);
+
 			return flightReponse;
 		} else {
+
+			log.info("no flight found with flightNumber : {}", flightNumber);
 
 			throw new FlightServiceExceptions("FLIGHT_NOT_FOUND", HttpStatus.NOT_FOUND);
 		}
@@ -83,6 +98,25 @@ public class FlightServiceImpl implements FlightService {
 		FlightResponse flightResponse = new FlightResponse();
 		BeanUtils.copyProperties(flight, flightResponse);
 		return flightResponse;
+	}
+
+	@Override
+	public void reserveSeats(String flightNumber, int seats) throws FlightServiceExceptions {
+
+		log.info("reserve seats : {} for flightNumber : {}", seats, flightNumber);
+
+		Flight flight = flightRepository.findByFlightNumber(flightNumber).orElseThrow(() -> new FlightServiceExceptions(
+				"No flight found with flightNumber : " + flightNumber + "", HttpStatus.NOT_FOUND));
+
+		if (flight.getAvailableSeats() < seats) {
+			throw new FlightServiceExceptions("Not enough seats available", HttpStatus.NOT_FOUND);
+		}
+
+		flight.setAvailableSeats(flight.getTotalSeats() - seats);
+		flightRepository.save(flight);
+
+		log.info("flight reservered successfully");
+
 	}
 
 }

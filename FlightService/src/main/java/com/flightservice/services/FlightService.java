@@ -14,4 +14,6 @@ public interface FlightService {
 
 	FlightResponse getAFlight(String flightNumber) throws FlightServiceExceptions;
 
+	void reserveSeats(String flightNumber, int seats) throws FlightServiceExceptions;
+
 }

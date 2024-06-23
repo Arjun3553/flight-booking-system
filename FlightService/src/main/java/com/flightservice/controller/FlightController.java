@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.flightservice.exceptions.FlightServiceExceptions;
 import com.flightservice.model.FlightRequest;
 import com.flightservice.model.FlightResponse;
 import com.flightservice.services.FlightService;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/v1/api/flights")
@@ -45,6 +47,12 @@ public class FlightController {
 		var flight = flightService.getAFlight(flightNumber);
 		return new ResponseEntity<>(flight, HttpStatus.OK);
 
+	}
+
+	@PutMapping("/reserveSeats/{id}")
+	public void reserveSeats(@PathVariable("id") String flightNumber, @RequestParam int seats)
+			throws FlightServiceExceptions {
+		flightService.reserveSeats(flightNumber, seats);
 	}
 
 }
