@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.bookingservice.external.config.FlightServiceConfig;
 import com.bookingservice.external.fallback.FlightServiceFallback;
 
-@FeignClient(name = "flight-service", url = "http://localhost:9001/v1/api/flights", configuration = FlightServiceConfig.class, fallback = FlightServiceFallback.class)
+@FeignClient(name = "FLIGHT-SERVICE", url = "http://localhost:8888/v1/api/flights", configuration = FlightServiceConfig.class, fallback = FlightServiceFallback.class)
 public interface FlightServiceFeignClient {
 
     @PutMapping("/reserveSeats/{id}")
