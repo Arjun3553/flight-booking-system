@@ -40,7 +40,7 @@ open the repo in your vscode.
 
 ## Add Extensions to VSCode
 
-copy the extension from [Extension For VSCode](##-Extensions-For-VSCode) and paste it into your vscode code extension search bar and add them.
+copy the extension from [Extension For VSCode](#-extensions-for-vscode) and paste it into your vscode code extension search bar and add them.
 
 ## Vault Configuration
 
@@ -48,9 +48,9 @@ Extract the zip file and add it any directory of your choice
 
 Example:
 
-![vault zip img](https://github.com/Arjun3553/flight-booking-system.git/Images/vaultzip.png)
+![vault zip img](https://github.com/Arjun3553/flight-booking-system/blob/master/Images/vaultzip.png)
 
-![vault folder img](https://github.com/Arjun3553/flight-booking-system.git/Images/vaultunzip.png)
+![vault folder img](https://github.com/Arjun3553/flight-booking-system/blob/master/Images/vaultunzip.png)
 
 copy the path of the vault folder and add the path into system enviroment variables.
 
